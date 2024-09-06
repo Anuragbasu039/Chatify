@@ -128,8 +128,10 @@ import axios from "axios";
 import auth from "../config/firebase";
 import { io } from "socket.io-client";
 
-const baseURL = "http://localhost:3001/api";
+// Update the baseURL to use the Vercel server URL
+const baseURL = "https://chatify-server-sand.vercel.app/api";
 
+// Function to get the Firebase user's authentication token
 const getUserToken = async () => {
   const user = auth.currentUser;
   if (!user) throw new Error("User not authenticated");
@@ -137,10 +139,11 @@ const getUserToken = async () => {
   return token;
 };
 
+// Initiate Socket.IO connection with the Vercel URL
 export const initiateSocketConnection = async () => {
   try {
     const token = await getUserToken();
-    const socket = io("http://localhost:3001", {
+    const socket = io("https://chatify-server-sand.vercel.app", {
       auth: { token },
     });
     return socket;
@@ -150,6 +153,7 @@ export const initiateSocketConnection = async () => {
   }
 };
 
+// Function to create headers with the user token
 const createHeader = async () => {
   try {
     const token = await getUserToken();
@@ -164,6 +168,8 @@ const createHeader = async () => {
     throw e;
   }
 };
+
+// API calls using axios, with the new Vercel base URL
 
 export const getAllUsers = async () => {
   const header = await createHeader();
