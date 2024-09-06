@@ -1,8 +1,7 @@
 import { initializeApp, cert } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 
-// Use 'require' for JSON import
-const serviceAccountKey = require("./serviceAccountKey.json");
+import serviceAccountKey from "./serviceAccountKey.json" assert { type: "json" };
 
 const app = initializeApp({
   credential: cert(serviceAccountKey),
@@ -10,4 +9,3 @@ const app = initializeApp({
 
 const auth = getAuth(app);
 export default auth;
-
