@@ -1,4 +1,4 @@
-import ChatRoom from "../models/ChatRoom.js";
+  import ChatRoom from "../models/ChatRoom.js";
 
 export const createChatRoom = async (req, res) => {
   const newChatRoom = new ChatRoom({
