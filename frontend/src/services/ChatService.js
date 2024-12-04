@@ -1,9 +1,17 @@
-
 import axios from "axios";
 import auth from "../config/firebase";
 import { io } from "socket.io-client";
 
-const baseURL = "http://localhost:3001/api";
+// Base URL setup based on environment
+const baseURL =
+    process.env.NODE_ENV === "production"
+        ? "https://chatify-three-blush.vercel.app/api"
+        : "http://localhost:3001/api";
+
+const socketURL =
+    process.env.NODE_ENV === "production"
+        ? "https://chatify-three-blush.vercel.app"
+        : "http://localhost:3001";
 
 const getUserToken = async () => {
   const user = auth.currentUser;
@@ -15,7 +23,7 @@ const getUserToken = async () => {
 export const initiateSocketConnection = async () => {
   try {
     const token = await getUserToken();
-    const socket = io("http://localhost:3001", {
+    const socket = io(socketURL, {
       auth: { token },
     });
     return socket;
@@ -88,8 +96,8 @@ export const getChatRoomOfUsers = async (firstUserId, secondUserId) => {
   const header = await createHeader();
   try {
     const res = await axios.get(
-      `${baseURL}/room/${firstUserId}/${secondUserId}`,
-      header
+        `${baseURL}/room/${firstUserId}/${secondUserId}`,
+        header
     );
     return res.data;
   } catch (e) {
